@@ -2,6 +2,8 @@
 
 A keyboard driven CLI inside of Godot Engine (sort of...)
 
+![CleverKeys ui](./screenshots/Screenshot_7.png)
+![CleverKeys commands](./screenshots/commands_screenshot.png)
 
 
 # Installation
