@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="CKHarpoon" load_steps=2 format=3 uid="uid://bos5vnw3u0171"]
+
+[ext_resource type="Script" uid="uid://dvma8lo65w1jr" path="res://addons/clever_keys/classes/ck_harpoon.gd" id="1_ugcdn"]
+
+[resource]
+script = ExtResource("1_ugcdn")
+scripts = Dictionary[StringName, String]({
+&"ck": "res://addons/clever_keys/autoloads/ck_autoload.gd",
+&"ckui": "res://addons/clever_keys/classes/ck_ui.gd",
+&"config": "res://addons/clever_keys/classes/clever_keys_config.gd",
+&"harpoon": "res://addons/clever_keys/classes/ck_harpoon.gd",
+&"history": "res://addons/clever_keys/classes/ck_command_history.gd"
+})

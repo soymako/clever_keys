@@ -1,0 +1,132 @@
+[gd_scene load_steps=6 format=3 uid="uid://cdpr7by3qg7lh"]
+
+[ext_resource type="Script" uid="uid://cg5doi2w3o3sf" path="res://addons/clever_keys/classes/ck_ui.gd" id="1_jw1fi"]
+[ext_resource type="LabelSettings" uid="uid://dg4xxh347qfg0" path="res://addons/clever_keys/config/default.tres" id="2_wismv"]
+[ext_resource type="FontFile" uid="uid://cywteyy1ca65p" path="res://addons/clever_keys/config/SimplyMono-Bold.ttf" id="2_xd1jw"]
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_wismv"]
+color = Color(1, 1, 1, 0.29411766)
+thickness = 3
+vertical = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jw1fi"]
+bg_color = Color(0.16445974, 0.16445976, 0.16445965, 1)
+
+[node name="CKWindow" type="Window" node_paths=PackedStringArray("le")]
+transparent_bg = true
+positional_shadow_atlas_16_bits = false
+oversampling = false
+oversampling_override = 1.0
+title = "Clever Keys"
+initial_position = 1
+size = Vector2i(760, 500)
+transparent = true
+keep_title_visible = true
+script = ExtResource("1_jw1fi")
+le = NodePath("Control/ColorRect/VBoxContainer/LineEdit")
+metadata/_custom_type_script = "uid://cg5doi2w3o3sf"
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ColorRect" type="ColorRect" parent="Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/ColorRect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SplitContainer" type="HSplitContainer" parent="Control/ColorRect/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/split_bar_background = SubResource("StyleBoxLine_wismv")
+split_offset = 600
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/ColorRect/VBoxContainer/SplitContainer"]
+layout_mode = 2
+
+[node name="logScroll" type="ScrollContainer" parent="Control/ColorRect/VBoxContainer/SplitContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+scroll_vertical_custom_step = 1.0
+
+[node name="logContainer" type="VBoxContainer" parent="Control/ColorRect/VBoxContainer/SplitContainer/VBoxContainer/logScroll"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="SuggestionsLabel" type="Label" parent="Control/ColorRect/VBoxContainer/SplitContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 1
+label_settings = ExtResource("2_wismv")
+
+[node name="Directories" type="Label" parent="Control/ColorRect/VBoxContainer/SplitContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 1
+label_settings = ExtResource("2_wismv")
+max_lines_visible = 7
+visible_characters = 60
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="Control/ColorRect/VBoxContainer/SplitContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="HarpoonTitle" type="Label" parent="Control/ColorRect/VBoxContainer/SplitContainer/VBoxContainer2"]
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_jw1fi")
+text = "Harpoon"
+label_settings = ExtResource("2_wismv")
+horizontal_alignment = 1
+
+[node name="ScrollContainer2" type="ScrollContainer" parent="Control/ColorRect/VBoxContainer/SplitContainer/VBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="HarpoonList" type="VBoxContainer" parent="Control/ColorRect/VBoxContainer/SplitContainer/VBoxContainer2/ScrollContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="currentDir" type="Label" parent="Control/ColorRect/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "📁 > res://addons/clever_keys/classes/"
+label_settings = ExtResource("2_wismv")
+
+[node name="LineEdit" type="LineEdit" parent="Control/ColorRect/VBoxContainer" node_paths=PackedStringArray("shortcut_context")]
+z_index = 85
+layout_mode = 2
+size_flags_vertical = 8
+focus_behavior_recursive = 2
+shortcut_context = NodePath("../../../..")
+theme_override_colors/caret_color = Color(1, 1, 1, 1)
+theme_override_constants/caret_width = 8
+theme_override_fonts/font = ExtResource("2_xd1jw")
+theme_override_font_sizes/font_size = 16
+placeholder_text = "\"help\" or \"commands\""
+keep_editing_on_text_submit = true
+context_menu_enabled = false
+middle_mouse_paste_enabled = false
+caret_blink = true
+caret_blink_interval = 0.5
+caret_force_displayed = true

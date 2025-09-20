@@ -1,0 +1,6 @@
+[gd_resource type="LabelSettings" load_steps=2 format=3 uid="uid://dg4xxh347qfg0"]
+
+[ext_resource type="FontFile" uid="uid://cywteyy1ca65p" path="res://addons/clever_keys/config/SimplyMono-Bold.ttf" id="1_rj1df"]
+
+[resource]
+font = ExtResource("1_rj1df")

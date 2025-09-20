@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="CleverKeysConfig" load_steps=2 format=3 uid="uid://b3sjcdyxqqqil"]
+
+[ext_resource type="Script" uid="uid://d2j2n7105vqde" path="res://addons/clever_keys/classes/clever_keys_config.gd" id="2_0nwx2"]
+
+[resource]
+script = ExtResource("2_0nwx2")
+metadata/_custom_type_script = "uid://d2j2n7105vqde"
