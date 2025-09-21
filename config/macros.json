@@ -1,0 +1,5 @@
+{
+	"gd_ready": "func _ready()->void:\n\tpass",
+	"gd_process": "func _process(delta:float)->void:\n\tpass",
+	"gd_p_process": "func _physics_process(delta:float)->void:\n\tpass"
+}

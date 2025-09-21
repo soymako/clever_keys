@@ -42,6 +42,11 @@ func _ready() -> void:
 			pass
 		pass)
 	
+	%SplitContainer.drag_ended.connect(func():
+		var value:float = %SplitContainer.split_offset
+		CK.config.ck_split_offset = value
+		pass)
+	
 	
 	
 	CK.config.CK_ScaleChanged.connect(updateScale)
@@ -221,12 +226,21 @@ func onTextChanged(text:String)->void:
 var previousValid:String = "res://"
 
 func updateSuggestions(currentWord:String, currentLetter:String)->void:
+	
+	var args:PackedStringArray = le.text.split(" ")
+	
 	var directories:PackedStringArray = []
 	if currentArgIndex > 1:
 		var globalizedDir:String = ProjectSettings.globalize_path(CK.currentDir)
 		directories = DirAccess.get_directories_at(globalizedDir)
 	%SuggestionsLabel.text = ""
 	%Directories.text = ""
+	
+	if args[0] == "-m" and currentArgIndex == 2:
+		for _m:String in CK.macros.getAllKeys():
+			%SuggestionsLabel.text += "%s " %_m
+		pass
+	
 	for option in CK.getCompletions():
 		if option[0] == currentLetter:
 			$%SuggestionsLabel.text += "%s " %option

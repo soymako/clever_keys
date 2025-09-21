@@ -5,9 +5,11 @@
 [resource]
 script = ExtResource("1_ugcdn")
 scripts = Dictionary[StringName, String]({
+&"api": "res://addons/clever_keys/classes/ck_api.gd",
 &"ck": "res://addons/clever_keys/autoloads/ck_autoload.gd",
 &"ckui": "res://addons/clever_keys/classes/ck_ui.gd",
 &"config": "res://addons/clever_keys/classes/clever_keys_config.gd",
 &"harpoon": "res://addons/clever_keys/classes/ck_harpoon.gd",
-&"history": "res://addons/clever_keys/classes/ck_command_history.gd"
+&"history": "res://addons/clever_keys/classes/ck_command_history.gd",
+&"macros": "res://addons/clever_keys/classes/ck_macros.gd"
 })

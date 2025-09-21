@@ -6,6 +6,7 @@ signal LogMade(log:LogResource)
 signal LogsCleared()
 
 
+
 var logs:Array[LogResource] = []
 
 const CONFIG_PATH:String = "res://addons/clever_keys/config/completions.tres"
@@ -14,13 +15,22 @@ const DEFAULT_LABEL_SETTINGS = preload("res://addons/clever_keys/config/default.
 
 signal CurrentDirChanged(newDir:String)
 
+var api:CKAPI = CKAPI.new()
+
 var currentDir:String = "res://":
 	set(v):
 		currentDir = v
 		CurrentDirChanged.emit(currentDir)
 
 var targetScene:PackedScene = preload("res://addons/clever_keys/scenes/ck_window_scene.tscn")
-var uiInstance:CKWindow
+
+var macros:CKMacros = CKMacros.new()
+
+signal UIChanged(instance:CKWindow)
+var uiInstance:CKWindow:
+	set(v):
+		uiInstance = v
+		UIChanged.emit(uiInstance)
 
 var pressed:bool = false
 
@@ -141,9 +151,24 @@ func onListCommand(args:PackedStringArray)->void:
 	makeLogContent(content)
 	pass
 
+func handleMacroCommand(args:PackedStringArray)->void:
+	if args.size() == 0: return	
+	var alias:String = args[0]
+	
+	var target:String = macros.getMacro(alias)
+	
+	api.addTextOnCaret(api.getCurrentScriptTextEditor(), target)
+	
+	pass
+
+
+
+
+
 func handleCommand(option:String, args:PackedStringArray, full:String)->void:
 	if history: history.addCommand(full)
 	match option:
+		"-m": handleMacroCommand(args)
 		"ck_scale": if args.size() > 0: config.scale = abs(float(args[0]))
 		"ck_split_offset": if args.size() > 0: config.ck_split_offset = abs(float(args[0]))
 		"cd": onChangeDirectoryCommand(args)
@@ -241,9 +266,12 @@ func handleGotoLine(args:PackedStringArray)->void:
 var history:CKCommandHistory = CKCommandHistory.new()
 
 func _ready() -> void:
+	self.add_child(api)
+	self.add_child(history)
+	self.add_child(macros)
+	
 	config = ResourceLoader.load(CONFIG_PATH) as CleverKeysConfig
 	harpoon = _getHarpoonResource()
-	self.add_child(history)
 	
 	pass
 
@@ -300,30 +328,43 @@ func _handleRemoveCompletion(args:PackedStringArray)->void:
 	else: makeLog(Color.RED, true, ":", "Alias DOES NOT Exists!: %s" %alias)
 	pass
 
-func _handleFileCommand(args:PackedStringArray)->void:
+func _handleFileCommand(args:PackedStringArray) -> void:
 	if args.size() == 0: return
-	var path:String = args[0].get_base_dir()
-	if path.is_empty(): path = currentDir
-	var name:String = args[0].get_file()
-	
-	var extending:String = "extends Node" if name.get_extension() == "gd" else ""
-	var className:String = "#class_name CustomClass" if name.get_extension() == "gd" else ""
+	var rawPath:String = args[0]
+	var fullPath:String
+	if rawPath.begins_with("res://"):
+		fullPath = rawPath
+	else:
+		fullPath = currentDir.rstrip("/") + "/" + rawPath
+
+	var dirPath:String = fullPath.get_base_dir()
+	var fileName:String = fullPath.get_file()
+
+	print("Full path: %s" % fullPath)
+
+	var extending:String = ""
+	var className:String = ""
+
+	if fileName.get_extension() == "gd":
+		extending = "extends Node"
+		className = "#class_name CustomClass"
+
 	if args.size() > 1:
-		extending = "extends %s" %args[1]
+		extending = "extends %s" % args[1]
 	if args.size() > 2:
-		className = "class_name %s" %args[2]
-	ensure_dirs(path)
-	
-	if !FileAccess.file_exists(args[0]):
-		var file := FileAccess.open(args[0], FileAccess.WRITE)
+		className = "class_name %s" % args[2]
+
+	ensure_dirs(dirPath)
+
+	if !FileAccess.file_exists(fullPath):
+		var file := FileAccess.open(fullPath, FileAccess.WRITE)
 		if file:
-			file.store_string("%s\n%s\n\n\n" %[extending, className])
+			file.store_string("%s\n%s\n\n\n" % [extending, className])
 			file.close()
-	
-	EditorInterface.edit_resource(load(args[0]))
+
+	EditorInterface.edit_resource(load(fullPath))
 	destroyUI()
 
-	pass
 
 
 func ensure_dirs(path: String) -> void:
