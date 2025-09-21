@@ -33,3 +33,6 @@ this is version *0.0.1* FOR A REASON, commands may be missing or crashes might h
     - delete?
     - mkdir
     - git support on console? (can I even do that in gdscript?...)
+
+### Update 0.0.2
+- Added support for macros using the `-m <alias>`  command, macros should be registered into the `macros.json` inside the `config` directory
